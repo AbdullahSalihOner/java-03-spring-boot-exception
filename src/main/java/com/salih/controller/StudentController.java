@@ -1,8 +1,9 @@
 package com.salih.controller;
 
+import com.salih.exception.ResourceNotFoundException_404;
 import com.salih.model.Student;
 import com.salih.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,9 +36,17 @@ public class StudentController {
     }
 
     // GET - SELECT WHERE
+    // http://localhost:8090/api/v1/student/v1/{id}
+    @GetMapping("/student/v1/{id}")
+    public Student getOneStudentV1(@PathVariable Long id){
+        return studentService.getOneStudentV1(id);
+    }
+
+
+    // GET - SELECT WHERE
     // http://localhost:8090/api/v1/student/{id}
     @GetMapping("/student/{id}")
-    public Student getOneStudent(@PathVariable Long id){
+    public ResponseEntity<Student> getOneStudent(@PathVariable Long id) throws ResourceNotFoundException_404 {
         return studentService.getOneStudent(id);
     }
 
@@ -58,7 +67,7 @@ public class StudentController {
     // DELETE - DELETE
     // http://localhost:8090/api/v1/student/{id}
     @DeleteMapping("/student/{id}")
-    public Map<String, Boolean> deleteStudent(@PathVariable Long id) {
+    public Map<String, Boolean> deleteStudent(@PathVariable Long id)  throws ResourceNotFoundException_404 {
         return studentService.deleteStudent(id);
     }
 
@@ -66,8 +75,17 @@ public class StudentController {
     // http://localhost:8090/api/v1/student/{id}
     @PutMapping("/student/{id}")
     public Student updateStudent(@PathVariable Long id,
-                                 @RequestBody Student student) {
+                                 @RequestBody Student student) throws ResourceNotFoundException_404 {
         return studentService.updateStudent(id,student);
+    }
+
+
+    // PUT - UPDATE
+    // http://localhost:8090/api/v1/student/v1/{id}
+    @PutMapping("/student/v1/{id}")
+    public ResponseEntity<Student> updateStudentV2(@PathVariable Long id,
+                                 @RequestBody Student student) throws ResourceNotFoundException_404 {
+        return studentService.updateStudentV2(id,student);
     }
 
 }
